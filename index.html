@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Директор цирка</title>
+<meta name="description" content="Тексты из телеграм-канала «Директор цирка». Самое интересное всегда за закрытой дверью.">
+<meta name="theme-color" content="#780a1e">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Директор цирка">
+<meta property="og:title" content="Директор цирка">
+<meta property="og:description" content="Тексты из телеграм-канала. Самое интересное всегда за закрытой дверью.">
+<meta property="og:url" content="https://directorofcircus.github.io/">
+<meta property="og:image" content="https://directorofcircus.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root{
+  --paper:#F4F1EB; --ink:#1A1F1B; --soft:#6B6A62; --fire:#D3361F; --line:#DCD6CA;
+  --font:"Google Sans","Segoe UI",system-ui,sans-serif; color-scheme:light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --paper:#F4F1EB; --ink:#1A1F1B; --soft:#6B6A62; --line:#DCD6CA; color-scheme:light; } }
+:root[data-theme="dark"]{ --paper:#F4F1EB; --ink:#1A1F1B; --soft:#6B6A62; --line:#DCD6CA; }
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
+/* ---------- главная: публикации ---------- */
+body{background:#780a1e;color:#fff;font-family:"Google Sans","Segoe UI",system-ui,sans-serif}
+.bg-word{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-word span{position:absolute;left:-12.5vw;top:50%;transform:translateY(-50%);font-weight:400;text-transform:uppercase;color:#6e0b1d;
+  font-size:max(39.1vw,40vh);line-height:.8;letter-spacing:-.03em;white-space:nowrap}
+.pubs{position:relative;z-index:1;padding:0}
+.pubs-head{position:relative;padding:calc(7.8vw + env(safe-area-inset-top,0px)) 0 0 9.74vw;display:flex;align-items:flex-start}
+.pubs-title{margin:0;font-weight:400;font-size:6.67vw;line-height:.8;letter-spacing:-.03em}
+.pubs-count{margin-left:1.6vw;font-size:1.04vw;letter-spacing:-.03em;line-height:1}
+.cols,.row{display:grid;grid-template-columns:16.3vw 24.48vw 24.48vw 1fr;padding-left:9.74vw;align-items:center;letter-spacing:-.03em}
+.cols{margin-top:9.6vw;font-weight:700;font-size:max(13px,.833vw)}
+.list{position:relative;margin-top:7.6vw}
+.row{position:relative;z-index:1;height:max(34px,2.083vw);font-size:max(13px,.833vw);color:#fff;text-decoration:none}
+.row > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:2vw}
+.row .short{display:none}
+.band{position:absolute;left:0;right:0;top:0;height:max(34px,2.083vw);background:#fff;z-index:0;opacity:0;
+  transition:transform .22s cubic-bezier(.2,.7,.2,1),opacity .2s ease;pointer-events:none}
+.band.on{opacity:1}
+.row{transition:color .18s ease}
+.row.active{color:#780a1e}
+.row:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+
+
+
+/* ---------- подвал ---------- */
+.site-foot{position:relative;z-index:2;background:#780a1e;color:#fff;padding:clamp(64px,7vw,120px) 9.74vw calc(28px + env(safe-area-inset-bottom,0px));font-family:"Google Sans","Segoe UI",system-ui,sans-serif;letter-spacing:-.02em}
+.pubs .site-foot{margin-top:clamp(80px,9vw,160px);border-top:1px solid rgba(255,255,255,.18)}
+.sf-lead{margin:0 0 clamp(48px,5vw,88px);max-width:16ch;font-weight:400;font-size:clamp(30px,3.4vw,60px);line-height:1.02;letter-spacing:-.035em}
+.sf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 24px}
+.sf-grid small{display:block;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.55)}
+.sf-grid a,.sf-grid button{font:inherit;font-size:16px;color:#fff;background:none;border:0;padding:0;cursor:pointer;text-decoration:none;text-align:left}
+.sf-grid a:hover,.sf-grid button:hover{text-decoration:underline;text-underline-offset:4px}
+.sf-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(56px,6vw,96px);padding-top:18px;border-top:1px solid rgba(255,255,255,.18);font-size:13px;color:rgba(255,255,255,.55)}
+.sf-bottom button{font:inherit;color:#fff;background:none;border:0;padding:0;cursor:pointer}
+body:not(.view-post) .sf-share-box{display:none}
+@media (max-width:720px){
+  .site-foot{padding:56px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+  .sf-grid{grid-template-columns:1fr;gap:22px}
+  .sf-grid a,.sf-grid button{font-size:15px}
+}
+
+/* ---------- статья ---------- */
+body.view-post .pubs, body.view-post .bg-word{display:none}
+body:not(.view-post) .post{display:none}
+.post{position:fixed;inset:0;z-index:1;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  perspective:1px;perspective-origin:50% 0;background:#780a1e}
+html.lock,html.lock body{overflow:hidden}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+.pc{position:relative;height:150vh;transform-style:preserve-3d}
+.pc-layer{position:absolute;left:0;top:0;width:100%;height:128vh;overflow:hidden;transform-origin:50% 0;transform:translateZ(-1.2px) scale(2.2)}
+.pc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block}
+.pc-shade{position:absolute;inset:0;pointer-events:none;background:rgba(0,0,0,.2)}
+.pc-title{position:absolute;left:50%;top:50vh;transform:translate(-50%,-50%);margin:0;width:min(86vw,760px);text-align:center;
+  font-weight:400;font-size:24px;line-height:1.2;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 16px rgba(0,0,0,.45);will-change:transform,opacity}
+.paper{position:relative;z-index:2;margin-top:-34vh;min-height:110vh;box-sizing:border-box;background:#fff;color:#141414;padding:clamp(40px,5vw,96px) 0 clamp(80px,10vw,160px)}
+.tear{position:absolute;left:0;right:0;bottom:calc(100% - 40px);width:100%;display:block;overflow:visible;pointer-events:none}
+.paper-in{width:min(720px,88vw);margin:0 auto;text-align:left}
+.p-meta{display:flex;gap:28px;font-size:13px;letter-spacing:-.02em;color:#8a8580;margin-bottom:clamp(28px,3vw,48px)}
+.p-lead{margin:0 0 clamp(36px,4vw,64px);font-weight:400;font-size:clamp(30px,2.9vw,52px);line-height:1.04;letter-spacing:-.035em;color:#141414}
+.p-body{max-width:none}
+.p-body p{margin:0 0 1.15em;font-size:18px;line-height:1.65;letter-spacing:-.01em}
+.p-body strong{font-weight:600}
+.p-body h3{margin:1.7em 0 .6em;font-weight:500;font-size:22px;line-height:1.25;letter-spacing:-.02em}
+
+.p-gallery{display:flex;flex-direction:column;gap:8px;margin-top:clamp(36px,4vw,64px)}
+.p-gallery:empty{display:none}
+.pg-row{display:grid;grid-template-columns:1fr;gap:8px}
+.pg-row.two{grid-template-columns:1fr 1fr}
+.pg-row img{display:block;width:100%;height:auto;background:#f1eeea}
+.pg-row.two img{height:100%;object-fit:cover}
+@media (max-width:720px){ .p-gallery,.pg-row{gap:6px} }
+.p-foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:clamp(56px,6vw,96px);padding-top:20px;border-top:1px solid #e6e2dd;font-size:14px}
+.p-foot a{color:#141414;text-decoration:none}
+.p-foot a:hover{color:#780a1e}
+.p-foot .next{text-align:right}
+.p-foot small{display:block;color:#8a8580;font-size:12px;margin-bottom:4px}
+body.view-post.on-paper .wordmark{color:#780a1e}
+body.view-post.entered.scrolled .site-head{background:none}
+body.view-post .site-head,body.view-post.entered.scrolled .site-head{background:#fff;transition:none}
+body.view-post .wordmark,body.view-post.entered .wordmark{color:#780a1e;transition:none}
+.site-head a{pointer-events:auto;text-decoration:none}
+.crumbs{position:absolute;left:20px;top:env(safe-area-inset-top,0px);height:40px;display:none;align-items:center;gap:8px;max-width:calc(50% - 150px);
+  font-family:"Google Sans","Segoe UI",system-ui,sans-serif;font-size:13px;letter-spacing:-.02em;white-space:nowrap;pointer-events:auto}
+body.view-post .crumbs{display:flex}
+.crumbs a{color:#8a8580;text-decoration:none;flex:none}
+.crumbs a:hover{color:#141414}
+.crumbs i{font-style:normal;color:#8a8580;flex:none}
+.crumbs span{color:#141414;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:720px){
+  body.view-post .site-head{height:calc(env(safe-area-inset-top,0px) + 68px);align-items:flex-start;padding-top:calc(env(safe-area-inset-top,0px) + 14px)}
+  .crumbs{left:20px;right:20px;top:calc(env(safe-area-inset-top,0px) + 36px);height:28px;max-width:none;font-size:12px}
+}
+
+.row.soon{cursor:default;color:rgba(255,255,255,.5)}
+.row.soon.active{color:rgba(120,10,30,.55)}
+@media (max-width:720px){
+  .pc-title{font-size:20px}
+  .paper-in{width:auto;padding:0 20px}
+  .p-meta{gap:18px;font-size:12px}
+  .p-lead{font-size:clamp(24px,7.4vw,32px);line-height:1.08}
+  .p-body p{font-size:14px;line-height:1.6}
+  .p-body h3{font-size:17px}
+}
+
+@media (max-width:720px){
+  .bg-word span{left:-6vw}
+  .pubs{padding-bottom:64px}
+  .pubs-head{padding:calc(238px + env(safe-area-inset-top,0px)) 20px 0 20px}
+  .pubs-title{font-size:clamp(44px,14vw,64px)}
+  .pubs-count{font-size:13px;margin-left:8px}
+  .cols,.row{grid-template-columns:minmax(0,1fr) auto;padding:0 20px;column-gap:14px}
+  .cols{margin-top:48px;font-size:12.5px}
+  .list{margin-top:20px}
+  .row{height:40px;font-size:12.5px}
+  .row > span{padding-right:0}
+  .cols .c-time,.row .c-time,.cols .c-num,.row .c-num{display:none}
+  .row .long{display:none}
+  .row .short{display:inline}
+  .band{height:40px}
+}
+.intro{position:fixed;inset:0;z-index:10;background:#22301a;transition:opacity .45s ease}
+.intro.reveal{background:transparent}
+.intro canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+.intro.done{opacity:0;pointer-events:none}
+:focus-visible{outline:2px solid var(--fire);outline-offset:3px}
+@font-face{font-family:"Google Sans";src:url(assets/fonts/google-sans.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:block}
+.site-head{position:fixed;z-index:30;top:0;left:0;right:0;height:calc(env(safe-area-inset-top,0px) + 40px);box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .6s ease}
+body.entered.scrolled .site-head{background:linear-gradient(#780a1e 55%,rgba(120,10,30,0))}
+.wordmark{font-family:"Google Sans","Segoe UI",system-ui,sans-serif;font-weight:600;font-size:clamp(12px,.833vw,16px);letter-spacing:.3em;margin-right:-.3em;line-height:1;
+  color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.35);white-space:nowrap;transition:color .6s ease,text-shadow .6s ease}
+body.entered .wordmark{color:#fff;text-shadow:none}
+.intro-ui{position:absolute;inset:0;pointer-events:none;font-family:"Google Sans","Segoe UI",system-ui,sans-serif;color:#fff}
+.intro-bottom{position:absolute;inset:0;transition:opacity .9s ease}
+.intro-bottom.gone{opacity:0}
+.intro-top,.intro-bottom::after{content:"";position:absolute;left:0;right:0}
+.intro-top{top:0;height:22%;will-change:opacity;background:linear-gradient(to bottom,rgba(12,9,6,.5),rgba(12,9,6,.18) 50%,rgba(12,9,6,0))}
+.intro-bottom::after{bottom:0;height:40%;background:linear-gradient(to top,rgba(12,9,6,.78),rgba(12,9,6,.4) 45%,rgba(12,9,6,0))}
+.intro-text{position:absolute;z-index:2;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + clamp(28px,5vh,52px));transform:translateX(-50%);width:min(86vw,300px);text-align:center}
+.intro-text p{margin:0;font-weight:400;font-size:clamp(13px,1vw,15px);line-height:1.45;color:rgba(255,255,255,.9);text-shadow:0 1px 10px rgba(0,0,0,.35)}
+
+</style>
+</head>
+<body>
+<header class="site-head"><nav class="crumbs" aria-label="Навигация"><a href="#">Публикации</a><i>•</i><span id="crumbCur"></span></nav><a href="#" class="wordmark" id="wordmark" aria-label="Пролёт через скважину">CIRCUS DIRECTOR</a></header>
+<div class="bg-word" aria-hidden="true"><span>circus<br>director</span></div>
+<main class="pubs">
+  <div class="pubs-head">
+    <h1 class="pubs-title">Публикации</h1>
+    <span class="pubs-count" id="count">(20)</span>
+  </div>
+  <div class="cols" aria-hidden="true">
+    <span class="c-num">Номер</span><span>Название</span><span class="c-time">Время чтения</span><span>Дата</span>
+  </div>
+  <nav class="list" id="list" aria-label="Публикации">
+    <div class="band" id="band"></div>
+  </nav>
+  <footer class="site-foot">
+    <p class="sf-lead">Самое интересное всегда за закрытой дверью.</p>
+    <div class="sf-grid">
+      <div><small>Связаться по любым вопросам</small><a href="mailto:proj.dealer@gmail.com">proj.dealer@gmail.com</a></div>
+      <div><small>Телеграм-канал</small><a href="https://t.me/directorofcircus" target="_blank" rel="noopener">Директор цирка</a></div>
+      <div><small>Digital-агентство</small><a href="https://eggency.pro" target="_blank" rel="noopener">Eggency</a></div>
+      <div class="sf-share-box"><small>Понравился текст?</small><button class="sf-share" type="button">Поделиться статьёй</button></div>
+    </div>
+    <div class="sf-bottom"><span>© 2026 Circus Director</span><button class="sf-up" type="button">Наверх ↑</button></div>
+  </footer>
+</main>
+<section class="post" id="post" aria-live="polite">
+  <div class="pc" id="pc">
+    <div class="pc-layer"><img class="pc-img" id="pcImg" alt=""><div class="pc-shade"></div></div>
+    <h1 class="pc-title" id="pcTitle"></h1>
+  </div>
+  <article class="paper" id="paper">
+    <svg class="tear" id="tear" aria-hidden="true"></svg>
+    <div class="paper-in">
+      <div class="p-meta" id="pMeta"></div>
+      <p class="p-lead" id="pLead"></p>
+      <div class="p-body" id="pBody"></div>
+      <div class="p-gallery" id="pGallery"></div>
+      <footer class="p-foot">
+        <a href="#">← Все публикации</a>
+        <a class="next" id="pNext" href="#"></a>
+      </footer>
+    </div>
+  </article>
+  <footer class="site-foot">
+    <p class="sf-lead">Самое интересное всегда за закрытой дверью.</p>
+    <div class="sf-grid">
+      <div><small>Связаться по любым вопросам</small><a href="mailto:proj.dealer@gmail.com">proj.dealer@gmail.com</a></div>
+      <div><small>Телеграм-канал</small><a href="https://t.me/directorofcircus" target="_blank" rel="noopener">Директор цирка</a></div>
+      <div><small>Digital-агентство</small><a href="https://eggency.pro" target="_blank" rel="noopener">Eggency</a></div>
+      <div class="sf-share-box"><small>Понравился текст?</small><button class="sf-share" type="button">Поделиться статьёй</button></div>
+    </div>
+    <div class="sf-bottom"><span>© 2026 Circus Director</span><button class="sf-up" type="button">Наверх ↑</button></div>
+  </footer>
+</section>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-ui" id="introUi">
+    <div class="intro-top" id="introTop"></div>
+    <div class="intro-bottom" id="introBottom">
+      <div class="intro-text">
+        <p>Самое интересное всегда за закрытой дверью. Подглядывайте.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/vendor/three.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script>
+(() => {
+  const A = window.SCENE;
+  /* ---------- геометрия сцены: камера смотрит горизонтально, горизонт картины на строке 140 ---------- */
+  const IW = 1672, IH = 941, CX = 836, YH = 140;
+  const F = (IH / 2) / Math.tan(20 * Math.PI / 180);   // фокус в px картины (обзор 40°)
+  const HC = 10;                                      // высота камеры
+  const TANC = (IH / 2 - YH) / F;                     // смещение объектива: центр кадра ниже горизонта
+  const Zrow = r => F * HC / (r - YH);                // расстояние до земли под строкой r
+  const P = (c, r, Z) => new THREE.Vector3((c - CX) * Z / F, HC - (r - YH) * Z / F, -Z);
+  const bandOf = y => y < 330 ? 330 : y < 450 ? 450 : y < 650 ? 650 : y < 800 ? 800 : 941;
+
+  const intro = document.getElementById('intro');
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, premultipliedAlpha: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  intro.prepend(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x7c8fa0);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 2000);
+
+  /* ---------- свет: мягкий дневной + солнце слева сверху, бумага отбрасывает тени ---------- */
+  scene.add(new THREE.HemisphereLight(0xfff6e6, 0x8a9a5a, 0.72));
+  const sun = new THREE.DirectionalLight(0xfff0d8, 0.5);
+  sun.position.set(-40, 55, 10); sun.target.position.set(0, 0, -45);
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 1, far: 220 });
+  sun.shadow.bias = -0.0006; sun.shadow.radius = 3;
+  scene.add(sun, sun.target);
+
+  const loader = new THREE.TextureLoader();
+  const aniso = renderer.capabilities.getMaxAnisotropy();
+  const load = src => new Promise(res => loader.load(src, t => { t.anisotropy = aniso; res(t); }, undefined, () => res(null)));
+
+  /* ---------- земля: живописная трава ---------- */
+  function grassTexture() {
+    const c = document.createElement('canvas'); c.width = c.height = 512;
+    const g = c.getContext('2d');
+    g.fillStyle = '#9aa846'; g.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 9000; i++) {
+      const x = Math.random() * 512, y = Math.random() * 512, l = 4 + Math.random() * 9;
+      const h = 62 + Math.random() * 22, s = 38 + Math.random() * 25, v = 38 + Math.random() * 22;
+      g.strokeStyle = `hsla(${h},${s}%,${v}%,0.55)`; g.lineWidth = 1 + Math.random() * 1.4;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x + (Math.random() - .5) * 3, y - l); g.stroke();
+    }
+    for (let i = 0; i < 260; i++) {
+      g.fillStyle = Math.random() < .5 ? 'rgba(255,250,235,.8)' : 'rgba(240,200,80,.75)';
+      g.beginPath(); g.arc(Math.random() * 512, Math.random() * 512, 1.2 + Math.random(), 0, 7); g.fill();
+    }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(40, 60); t.anisotropy = aniso;
+    return t;
+  }
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 700), new THREE.MeshLambertMaterial({ map: grassTexture() }));
+  ground.rotation.x = -Math.PI / 2; ground.position.set(0, 0, -250); ground.receiveShadow = true;
+  scene.add(ground);
+
+  /* ---------- бумажные кулисы и фигуры ---------- */
+  function cardMesh(tex, rect, Z, opts) {
+    const [x0, y0, x1, y1] = rect;
+    const a = P(x0, y1, Z), b = P(x1, y0, Z);
+    const geo = new THREE.PlaneGeometry(b.x - a.x, b.y - a.y);
+    const mat = new THREE.MeshLambertMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set((a.x + b.x) / 2, (a.y + b.y) / 2, -Z);
+    if (opts.shadow) {
+      mesh.castShadow = true;
+      mesh.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: tex, alphaTest: 0.5 });
+    }
+    mesh.receiveShadow = !!opts.receive;
+    if (opts.unlit) mesh.material = new THREE.MeshBasicMaterial({ map: tex, alphaTest: 0.5, fog: false });
+    scene.add(mesh); return mesh;
+  }
+
+  /* ---------- настоящая дверь: коробка, полотно с толщиной, латунная накладка, сквозная скважина ---------- */
+  // координаты двери — в px кадра двери (ширина коробки 520, высота 882), Y вверх
+  const DW = 520, DH = 882;
+  const EX0 = 215, EX1 = 319, EY0 = 373, EY1 = 539;           // накладка
+  const toLocal = ([nx, ny]) => [EX0 + nx * (EX1 - EX0), EY1 - ny * (EY1 - EY0)];
+  const KEY = A.keyShape.map(toLocal), ESC = A.escShape.map(toLocal);
+  const shapeFrom = pts => { const s = new THREE.Shape(); pts.forEach(([x, y], i) => i ? s.lineTo(x, y) : s.moveTo(x, y)); s.closePath(); return s; };
+  const pathFrom = pts => { const s = new THREE.Path(); pts.slice().reverse().forEach(([x, y], i) => i ? s.lineTo(x, y) : s.moveTo(x, y)); s.closePath(); return s; };
+  const rect = (x0, y0, x1, y1) => shapeFrom([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
+  // центр круглой части скважины: середина по ширине, ~20% высоты отверстия от верха
+  const keyCenter = (() => {
+    const xs = KEY.map(p => p[0]), ys = KEY.map(p => p[1]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    return [(x0 + x1) / 2, y1 - (y1 - y0) * 0.21];
+  })();
+  const LEAF_BACK = 34;                                  // толщина полотна, px кадра двери
+
+  function buildDoor(doorTex, escTex) {
+    const group = new THREE.Group();
+    const wood = doorTex.clone(); wood.needsUpdate = true; wood.repeat.set(1 / DW, 1 / DH);
+    const woodMat = new THREE.MeshLambertMaterial({ map: wood });
+    const extrude = (shape, depth, z, mat, bevel) => {
+      const g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: !!bevel, bevelThickness: bevel || 0, bevelSize: bevel || 0, bevelSegments: 2, curveSegments: 4 });
+      const m = new THREE.Mesh(g, mat); m.position.z = z - depth; m.castShadow = true; m.receiveShadow = true; group.add(m); return m;
+    };
+    // коробка
+    extrude(rect(0, 0, 66, DH), 70, 22, woodMat);
+    extrude(rect(456, 0, DW, DH), 70, 22, woodMat);
+    extrude(rect(66, 836, 456, DH), 70, 22, woodMat);
+    // полотно со сквозной скважиной
+    const leaf = rect(66, 0, 456, 836); leaf.holes.push(pathFrom(KEY));
+    extrude(leaf, 34, 0, woodMat);
+    // латунная накладка
+    const brass = escTex; brass.repeat.set(1 / (EX1 - EX0), 1 / (EY1 - EY0)); brass.offset.set(-EX0 / (EX1 - EX0), -EY0 / (EY1 - EY0));
+    const escShape = shapeFrom(ESC); escShape.holes.push(pathFrom(KEY));
+    const escMat = new THREE.MeshLambertMaterial({ map: brass, alphaTest: 0.35, side: THREE.DoubleSide, emissive: 0x2a1a00 });
+    extrude(escShape, 5, 6, escMat, 1.2);
+    // портал: в глубине скважины открывается сайт
+    const portal = new THREE.Mesh(new THREE.ShapeGeometry(shapeFrom(KEY)), new THREE.MeshBasicMaterial({
+      transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
+      blendSrc: THREE.ZeroFactor, blendDst: THREE.ZeroFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.ZeroFactor
+    }));
+    portal.position.z = -LEAF_BACK - 0.6; portal.renderOrder = 100; group.add(portal);
+    return group;
+  }
+
+  /* ---------- сборка ---------- */
+  const ZD = Zrow(650);                                 // дверь стоит на земле под строкой 650
+  let doorGroup = null, K = null;
+  const ready = (async () => {
+    const texs = await Promise.all(A.cards.map(c => load(c.img)));
+    A.cards.forEach((c, i) => {
+      if (!texs[i]) return;
+      if (c.kind === 'back') cardMesh(texs[i], c.rect, Zrow(c.bottom), { unlit: true });
+      else if (c.kind === 'band') cardMesh(texs[i], c.rect, Zrow(c.bottom), { shadow: true, receive: true });
+      else cardMesh(texs[i], c.rect, Zrow(bandOf(c.bottom)) * 0.965, { shadow: true, receive: true });
+    });
+    const [doorTex, escTex] = await Promise.all([load(A.door), load(A.esc)]);
+    doorGroup = buildDoor(doorTex, escTex);
+    // совмещаем дверь с картиной: коробка 750–910 px, верх 372, низ 650
+    const bl = P(750, 650, ZD), tr = P(910, 372, ZD);
+    const sx = (tr.x - bl.x) / DW, sy = (tr.y - bl.y) / DH;
+    doorGroup.scale.set(sx, sy, sx);
+    doorGroup.position.set(bl.x, bl.y, -ZD);
+    scene.add(doorGroup);
+    K = new THREE.Vector3(bl.x + keyCenter[0] * sx, bl.y + keyCenter[1] * sy, -ZD);
+    BACKZ = -ZD - LEAF_BACK * sx;                        // выход из тоннеля скважины
+    DTOT = -BACKZ + 0.02;                                // камера заканчивает путь чуть за выходом
+  })();
+
+  /* ---------- камера ---------- */
+  let vw = 0, vh = 0, tanHalf = Math.tan(20 * Math.PI / 180);
+  function resize() {
+    vw = window.innerWidth; vh = window.innerHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(vw, vh, false);
+    const aspect = vw / vh;
+    camera.aspect = aspect;
+    camera.fov = aspect >= IW / IH ? 2 * Math.atan((IW / 2) / F / aspect) * 180 / Math.PI : 40;
+    tanHalf = Math.tan(camera.fov / 2 * Math.PI / 180);
+  }
+  window.addEventListener('resize', resize);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+
+  let DTOT = 0, BACKZ = 0;
+  function place(m) {
+    const q = 1 / (m * m), dist = DTOT / m;
+    camera.position.set(K.x * (1 - q), K.y + (HC - K.y) * q, -DTOT + dist);
+    camera.updateProjectionMatrix();
+    camera.projectionMatrix.elements[9] = -(TANC * q) / tanHalf;      // смещение объектива уходит к нулю
+    camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+    renderer.render(scene, camera);
+    return camera.position.z;
+  }
+
+  const HOLD = 1400, FLY = 5200;
+  const ui = document.getElementById('introBottom'), topShade = document.getElementById('introTop');
+  let raf = 0, running = false, t0 = 0;
+  function frame(now) {
+    if (!running) return;
+    const el = now - t0;
+    const mEnd = DTOT / 0.034;                      // конец пути: выход из тоннеля
+    let m;
+    if (el < HOLD) m = 1.001 + 0.03 * (el / HOLD);
+    else {
+      const t = clamp((el - HOLD) / FLY, 0, 1);
+      const e = 0.55 * (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2) + 0.45 * t * t;
+      m = 1.03 * Math.pow(mEnd / 1.03, e);
+    }
+    const z = place(m);
+    if (m > 45) ui.classList.add('gone');             // нижний текст уходит, когда камера вплотную у скважины
+    topShade.style.opacity = 1 - smooth(20, 160, m);   // затемнение под шапкой тает до прохода сквозь скважину
+    if (el >= HOLD + FLY || z <= BACKZ + 0.015) return finish(true);   // прошли скважину насквозь
+    raf = requestAnimationFrame(frame);
+  }
+  function finish(through) {
+    running = false; cancelAnimationFrame(raf);
+    if (through) { intro.style.transition = 'none'; requestAnimationFrame(() => { intro.style.transition = ''; }); }
+    intro.classList.add('done'); document.body.classList.add('entered');
+    if (window.__lenis && !document.body.classList.contains('view-post')) window.__lenis.start();
+  }
+  async function play() {
+    if (window.__lenis) { window.__lenis.scrollTo(0, { immediate: true, force: true }); window.__lenis.stop(); }
+    resize(); intro.classList.remove('done', 'reveal'); renderer.domElement.style.opacity = 1; ui.classList.remove('gone'); topShade.style.opacity = 1; document.body.classList.remove('entered');
+    await ready; if (!doorGroup) return finish();
+    await (document.fonts ? document.fonts.ready : Promise.resolve());
+    intro.classList.add('reveal');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { place(1); setTimeout(finish, 1500); return; }
+    running = true; t0 = performance.now(); raf = requestAnimationFrame(frame);
+  }
+  
+  document.addEventListener('keydown', e => { if (running && (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); finish(); } });
+  
+  document.getElementById('wordmark').addEventListener('click', e => {
+    e.preventDefault();
+    if (running) return;
+    if (location.hash) history.pushState(null, '', location.pathname + location.search);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    window.scrollTo(0, 0);
+    play();
+  });
+  if (/^#post-\d{3}$/.test(location.hash)) { intro.classList.add('done'); document.body.classList.add('entered'); }
+  else if (location.hash === '#debug') {
+    window.__fly = async m => { resize(); await ready; intro.classList.add('reveal'); topShade.style.opacity = 1 - smooth(20, 160, m); if (m > 45) ui.classList.add('gone'); return place(m) - BACKZ; };
+  } else play();
+})();
+</script>
+
+
+<script>
+(() => {
+  // 20 последних текстов канала (части одного поста склеены в одну статью)
+  const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const POSTS = [
+    { title: "Чем проститутка отличается от эскортницы?", min: 1, date: new Date(2026, 10, 11) },
+    { title: "Задача на декабрь", min: 1, date: new Date(2025, 11, 17) },
+    { title: "Про украшательство и смысл", min: 1, date: new Date(2025, 9, 14) },
+    { title: "Вылезти из скорлупы", min: 1, date: new Date(2025, 8, 15) },
+    { title: "Два метра до мусорки", min: 1, date: new Date(2025, 7, 4) },
+    { title: "Цена свободы", min: 1, date: new Date(2025, 7, 4) },
+    { title: "Грехоразбор. Воспитание", min: 1, date: new Date(2025, 5, 16) },
+    { title: "Грехоразбор. Продажи", min: 1, date: new Date(2025, 5, 2) },
+    { title: "Черствый хлеб", min: 1, date: new Date(2025, 4, 20) },
+    { title: "Синдром отложенной жизни", min: 1, date: new Date(2025, 3, 14) },
+    { title: "Поверхностный подход", min: 1, date: new Date(2025, 1, 18) },
+    { title: "Протухший пост", min: 5, date: new Date(2025, 0, 9) },
+    { title: "Плывем? — плывем!", min: 4, date: new Date(2024, 9, 22) },
+    { title: "Критическое мышление и контекст", min: 5, date: new Date(2024, 8, 24) },
+    { title: "Как я провел лето", min: 3, date: new Date(2024, 8, 2) },
+    { title: "Меняйся или сдохни", min: 2, date: new Date(2024, 7, 13) },
+    { title: "Кортизоловая диета", min: 2, date: new Date(2024, 6, 22) },
+    { title: "Две известные беды", min: 2, date: new Date(2024, 5, 3) },
+    { title: "Барбадосская секта миротворцев", min: 4, date: new Date(2024, 4, 15) },
+    { title: "Отдых. Впечатления и выводы", min: 3, date: new Date(2024, 3, 23) }
+  ].map((p, i, all) => Object.assign(p, { n: String(all.length - i).padStart(3, '0') }));
+
+  const list = document.getElementById('list'), band = document.getElementById('band');
+  document.getElementById('count').textContent = '(' + POSTS.length + ')';
+  POSTS.forEach(p => {
+    const ready = !!(window.ART && ART[p.n]);
+    if (ready) p.min = ART[p.n].min;
+    p.ready = ready;
+    const a = document.createElement(ready ? 'a' : 'div');
+    a.className = 'row' + (ready ? '' : ' soon'); if (ready) a.href = '#post-' + p.n;
+    const long = p.date.getDate() + ' ' + MONTHS[p.date.getMonth()] + ' ' + p.date.getFullYear();
+    const short = String(p.date.getDate()).padStart(2, '0') + '.' + String(p.date.getMonth() + 1).padStart(2, '0') + '.' + String(p.date.getFullYear()).slice(2);
+    a.innerHTML = '<span class="c-num"></span><span></span><span class="c-time"></span><span><span class="long"></span><span class="short"></span></span>';
+    const s = a.children;
+    s[0].textContent = p.n; s[1].textContent = p.title; s[2].textContent = p.min + ' мин';
+    s[3].querySelector('.long').textContent = long; s[3].querySelector('.short').textContent = short;
+    list.appendChild(a);
+  });
+  const rows = [...list.querySelectorAll('.row')];
+
+  let current = null;
+  function moveTo(row) {
+    if (row === current) return;
+    if (current) current.classList.remove('active');
+    current = row;
+    if (row) row.classList.add('active');
+    if (!row) { band.classList.remove('on'); return; }
+    band.style.transform = 'translateY(' + row.offsetTop + 'px)';
+    band.classList.add('on');
+  }
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  list.addEventListener('pointermove', e => { if (fine.matches) moveTo(e.target.closest('.row')); });
+  list.addEventListener('pointerleave', () => { if (fine.matches) moveTo(null); });
+  list.addEventListener('focusin', e => moveTo(e.target.closest('.row')));
+  list.addEventListener('click', e => {
+    const a = e.target.closest('a.row'); if (!a) return;
+    e.preventDefault(); moveTo(a);
+    if (window.__openPost) window.__openPost(a.getAttribute('href').slice(6));
+  });
+
+  // телефон: полоса привязана к прокрутке; у краёв страницы линия подтягивается к первой и последней строке
+  function byScroll() {
+    if (fine.matches || document.body.classList.contains('view-post')) return;
+    const vh = window.innerHeight, base = vh * 0.42;
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - vh);
+    const y = Math.min(Math.max(window.scrollY, 0), maxScroll), below = maxScroll - y;
+    const center = r => { const b = r.getBoundingClientRect(); return (b.top + b.bottom) / 2; };
+    let line = base;
+    const firstAtTop = center(rows[0]) + y;
+    if (firstAtTop < base && y < base - firstAtTop) line = base - (base - firstAtTop) * (1 - y / (base - firstAtTop));
+    const lastAtEnd = center(rows[rows.length - 1]) - below;
+    if (lastAtEnd > base) { const span = lastAtEnd - base; if (below < span) line = base + span * (1 - below / span); }
+    let best = null, dist = Infinity;
+    for (const r of rows) { const d = Math.abs(center(r) - line); if (d < dist) { dist = d; best = r; } }
+    moveTo(best);
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; document.body.classList.toggle('scrolled', window.scrollY > 30); byScroll(); }); } }, { passive: true });
+  window.addEventListener('resize', () => { const r = current; current = null; moveTo(r); byScroll(); });
+  byScroll();
+  window.__POSTS = POSTS; window.__MONTHS = MONTHS; window.__listScroll = byScroll;
+})();
+</script>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const post = $('post'), img = $('pcImg'), title = $('pcTitle'), paper = $('paper');
+  let listY = 0, active = null;
+
+  // рваный край листа: крупный обрыв + мелкие зазубрины + волокнистая кромка, у каждой статьи свой
+  function rng(seed) { let s = (seed * 2654435761) % 4294967296; return () => (s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296; }
+  function buildTear(seed) {
+    const svg = $('tear'), w = Math.max(320, document.documentElement.clientWidth), small = w < 720;
+    const h = Math.round(Math.min(window.innerHeight * (small ? .2 : .3), small ? 190 : 330));
+    const r = rng(seed);
+    const waves = [0, 1, 2, 3].map(i => ({ a: [0.34, 0.16, 0.08, 0.04][i] * h, f: [1, 2.3, 5.1, 11.7][i] * (0.75 + r() * 0.6), p: r() * 6.28 }));
+    const tilt = (r() - 0.5) * 0.5 * h;
+    const base = x => { const u = x / w; let y = h * 0.52 + tilt * (u - 0.5) * 2; waves.forEach(v => { y += v.a * Math.sin(u * v.f * Math.PI * 2 + v.p); }); return y; };
+    const pts = [];
+    for (let x = 0; x <= w;) {
+      let y = base(x) + (r() - 0.5) * (small ? 5 : 8);
+      if (r() < 0.05) y += (r() < .5 ? -1 : 1) * (6 + r() * 14);
+      pts.push([x, Math.max(4, Math.min(h - 2, y))]);
+      x += 2 + r() * (small ? 5 : 7);
+    }
+    pts[pts.length - 1][0] = w;
+    const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('');
+    const shape = (off, bottom) => pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + (p[1] + off).toFixed(1)).join('') + 'L' + w + ',' + bottom + 'L0,' + bottom + 'Z';
+    const id = 't' + seed;
+    const H = h + 40;                                   // нижние 40 px заходят на лист
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + H);
+    svg.setAttribute('width', w); svg.setAttribute('height', H);
+    svg.style.height = H + 'px';
+    svg.innerHTML =
+      '<defs>' +
+      '<filter id="' + id + 'f" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="' + seed + '"/><feDisplacementMap in="SourceGraphic" scale="' + (small ? 4 : 6) + '"/></filter>' +
+      '<filter id="' + id + 's" x="-5%" y="-40%" width="110%" height="180%"><feGaussianBlur stdDeviation="' + (small ? 5 : 9) + '"/></filter>' +
+      '</defs>' +
+      '<path d="' + shape(-2, h + 4) + '" fill="rgba(20,10,4,.42)" filter="url(#' + id + 's)" transform="translate(0,-3)"/>' +
+      '<path d="' + shape(-3, H) + '" fill="#efe7d9" filter="url(#' + id + 'f)"/>' +
+      '<path d="' + shape(1.5, H) + '" fill="#fff"/>' +
+      '<path d="' + line + '" fill="none" stroke="rgba(120,100,80,.18)" stroke-width="1" transform="translate(0,1.5)"/>';
+  }
+
+  function render(n) {
+    const P = window.__POSTS.find(p => p.n === n), A = ART[n], M = window.__MONTHS;
+    title.textContent = P.title;
+    const pool = window.COVER_POOL || [];
+    let k = Math.floor(Math.random() * pool.length);
+    if (pool.length > 1 && pool[k] === img.getAttribute('src')) k = (k + 1) % pool.length;
+    img.src = pool[k];
+    $('pMeta').innerHTML = '<span>№ ' + n + '</span><span>' + A.min + ' мин</span><span>' + P.date.getDate() + ' ' + M[P.date.getMonth()] + ' ' + P.date.getFullYear() + '</span>';
+    $('pLead').textContent = A.lead;
+    $('crumbCur').textContent = P.title;
+    // фото поста: 1 — во всю ширину; 2 — два во всю ширину; нечётное — одно широкое + пары; чётное — пары
+    const G = (window.PHOTOS || {})[n], gal = $('pGallery'); gal.innerHTML = '';
+    if (G) {
+      let i = 0;
+      G.rows.forEach(r => {
+        const row = document.createElement('div'); row.className = 'pg-row' + (r === 2 ? ' two' : '');
+        const its = G.items.slice(i, i + r); i += r;
+        const ar = its.reduce((s, x) => s + x.w / x.h, 0) / its.length;
+        its.forEach(x => {
+          const im = document.createElement('img'); im.src = x.src; im.alt = ''; im.decoding = 'async';
+          im.width = x.w; im.height = x.h;
+          if (r === 2) im.style.aspectRatio = ar.toFixed(4);
+          row.appendChild(im);
+        });
+        gal.appendChild(row);
+      });
+    }
+    $('pBody').innerHTML = A.paras.map(x => x.startsWith('<h3') ? x : '<p>' + x + '</p>').join('');
+    buildTear(parseInt(n, 10));
+    const ready = window.__POSTS.filter(p => p.ready);
+    const next = ready[(ready.findIndex(p => p.n === n) + 1) % ready.length];
+    const nx = $('pNext'); nx.href = '#post-' + next.n; nx.innerHTML = '<small>Следующая</small>' + next.title;
+    document.title = P.title + ' — Директор цирка';
+  }
+
+  // параллакс делает сам браузер (перспектива в CSS) — синхронно с прокруткой, без рывков
+  function parallax() {
+    if (!active) return;
+    title.style.opacity = Math.max(0, 1 - post.scrollTop / (window.innerHeight * 0.5));
+  }
+
+  function route(force) {
+    const m = /^#post-(\d{3})$/.exec(location.hash);
+    const n = force || (m && window.ART && ART[m[1]] ? m[1] : null);
+    if (n) {
+      if (!active) listY = window.scrollY;
+      active = n; render(n);
+      document.body.classList.add('view-post'); document.documentElement.classList.add('lock');
+      post.scrollTop = 0; parallax();
+    } else if (active) {
+      active = null;
+      document.body.classList.remove('view-post', 'on-paper'); document.documentElement.classList.remove('lock');
+      document.title = 'Директор цирка';
+      if (window.__lenis) window.__lenis.scrollTo(listY, { immediate: true, force: true }); else window.scrollTo(0, listY);
+      if (window.__listScroll) window.__listScroll();
+    }
+  }
+  window.addEventListener('hashchange', () => route());
+  window.__openPost = n => {
+    if (!window.ART || !ART[n]) return;
+    try { history.pushState(null, '', '#post-' + n); } catch (e) {}
+    route(n);
+    window.dispatchEvent(new Event('postopen'));
+  };
+  let tick = false;
+  post.addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(() => { tick = false; parallax(); }); } }, { passive: true });
+  window.addEventListener('resize', () => { if (active) buildTear(parseInt(active, 10)); parallax(); });
+  img.addEventListener('load', parallax);
+  document.querySelectorAll('.sf-up').forEach(b => b.addEventListener('click', () => {
+    if (active) { if (window.__lenisArt) window.__lenisArt.scrollTo(0); else post.scrollTo({ top: 0, behavior: 'smooth' }); }
+    else { if (window.__lenis) window.__lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  }));
+  document.querySelectorAll('.sf-share').forEach(b => b.addEventListener('click', async () => {
+    const url = location.href, title = document.title;
+    try {
+      if (navigator.share) { await navigator.share({ title, url }); return; }
+      await navigator.clipboard.writeText(url);
+      b.textContent = 'Ссылка скопирована'; setTimeout(() => { b.textContent = 'Поделиться статьёй'; }, 2000);
+    } catch (e) {}
+  }));
+  route();
+})();
+</script>
+
+<script>
+(() => {
+  // плавная прокрутка как на Ebanat: колесо и тачпад — с инерцией, на телефоне — родная прокрутка
+  if (!window.Lenis || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const opts = { lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true };
+  const post = document.getElementById('post');
+  const page = new Lenis(opts);
+  const art = new Lenis(Object.assign({ wrapper: post, content: post }, opts));
+  window.__lenis = page; window.__lenisArt = art;
+  (function raf(t) { page.raf(t); art.raf(t); requestAnimationFrame(raf); })(performance.now());
+  function sync() {
+    if (document.body.classList.contains('view-post')) { page.stop(); art.start(); art.scrollTo(0, { immediate: true, force: true }); }
+    else { art.stop(); if (document.getElementById('intro').classList.contains('done')) page.start(); }
+  }
+  window.addEventListener('hashchange', () => setTimeout(sync, 0));
+  window.addEventListener('postopen', () => setTimeout(sync, 0));
+  sync();
+})();
+</script>
+
+<script>
+(() => {
+  // GoatCounter: учёт посещений без кук. Главная и каждая статья — отдельная страница в статистике.
+  let last = null;
+  function track() {
+    const path = location.hash && /^#post-\d{3}$/.test(location.hash) ? '/post-' + location.hash.slice(6) : '/';
+    if (path === last) return;
+    if (!window.goatcounter || !window.goatcounter.count) { setTimeout(track, 400); return; }
+    last = path;
+    window.goatcounter.count({ path, title: document.title });
+  }
+  window.addEventListener('hashchange', () => setTimeout(track, 50));
+  window.addEventListener('postopen', () => setTimeout(track, 50));
+  window.addEventListener('load', track);
+})();
+</script>
+<script data-goatcounter="https://directorofcircus.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
