@@ -1,0 +1,46 @@
+name: Перенос постов из Telegram
+
+on:
+  repository_dispatch:
+    types: [telegram-post]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+
+concurrency:
+  group: import-posts
+  cancel-in-progress: true
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Библиотеки
+        run: pip install requests beautifulsoup4 pillow numpy onnxruntime
+
+      - name: Пауза, чтобы пост появился в публичной ленте
+        if: github.event_name == 'repository_dispatch'
+        run: sleep 45
+
+      - name: Перенос
+        run: python scripts/import_posts.py
+
+      - name: Публикация на сайте
+        run: |
+          git config user.name "circus-bot"
+          git config user.email "circus-bot@users.noreply.github.com"
+          git add -A data js assets
+          if git diff --cached --quiet; then
+            echo "Изменений нет"
+          else
+            git commit -m "Новые посты из Telegram"
+            git push
+          fi
