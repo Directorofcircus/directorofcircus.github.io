@@ -239,7 +239,9 @@ body.entered .wordmark{color:#fff;text-shadow:none}
   </div>
 </div>
 
-<script src="js/data.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/covers.js"></script>
+<script src="js/posts.js"></script>
 <script src="js/vendor/three.min.js"></script>
 <script src="js/vendor/lenis.min.js"></script>
 <script>
@@ -458,7 +460,7 @@ body.entered .wordmark{color:#fff;text-shadow:none}
     window.scrollTo(0, 0);
     play();
   });
-  if (/^#post-\d{3}$/.test(location.hash)) { intro.classList.add('done'); document.body.classList.add('entered'); }
+  if (/^#post-\d+$/.test(location.hash)) { intro.classList.add('done'); document.body.classList.add('entered'); }
   else if (location.hash === '#debug') {
     window.__fly = async m => { resize(); await ready; intro.classList.add('reveal'); topShade.style.opacity = 1 - smooth(20, 160, m); if (m > 45) ui.classList.add('gone'); return place(m) - BACKZ; };
   } else play();
@@ -470,28 +472,26 @@ body.entered .wordmark{color:#fff;text-shadow:none}
 (() => {
   // 20 последних текстов канала (части одного поста склеены в одну статью)
   const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-  const POSTS = [
-    { title: "Чем проститутка отличается от эскортницы?", min: 1, date: new Date(2026, 10, 11) },
-    { title: "Задача на декабрь", min: 1, date: new Date(2025, 11, 17) },
-    { title: "Про украшательство и смысл", min: 1, date: new Date(2025, 9, 14) },
-    { title: "Вылезти из скорлупы", min: 1, date: new Date(2025, 8, 15) },
-    { title: "Два метра до мусорки", min: 1, date: new Date(2025, 7, 4) },
-    { title: "Цена свободы", min: 1, date: new Date(2025, 7, 4) },
-    { title: "Грехоразбор. Воспитание", min: 1, date: new Date(2025, 5, 16) },
-    { title: "Грехоразбор. Продажи", min: 1, date: new Date(2025, 5, 2) },
-    { title: "Черствый хлеб", min: 1, date: new Date(2025, 4, 20) },
-    { title: "Синдром отложенной жизни", min: 1, date: new Date(2025, 3, 14) },
-    { title: "Поверхностный подход", min: 1, date: new Date(2025, 1, 18) },
-    { title: "Протухший пост", min: 5, date: new Date(2025, 0, 9) },
-    { title: "Плывем? — плывем!", min: 4, date: new Date(2024, 9, 22) },
-    { title: "Критическое мышление и контекст", min: 5, date: new Date(2024, 8, 24) },
-    { title: "Как я провел лето", min: 3, date: new Date(2024, 8, 2) },
-    { title: "Меняйся или сдохни", min: 2, date: new Date(2024, 7, 13) },
-    { title: "Кортизоловая диета", min: 2, date: new Date(2024, 6, 22) },
-    { title: "Две известные беды", min: 2, date: new Date(2024, 5, 3) },
-    { title: "Барбадосская секта миротворцев", min: 4, date: new Date(2024, 4, 15) },
-    { title: "Отдых. Впечатления и выводы", min: 3, date: new Date(2024, 3, 23) }
-  ].map((p, i, all) => Object.assign(p, { n: String(all.length - i).padStart(3, '0') }));
+  // посты приходят из js/posts.js; лид — первое предложение первого абзаца
+  function splitLead(ps) {
+    if (!ps.length) return { lead: '', paras: [] };
+    const p = ps[0], em = p.startsWith('<em>'), st = p.startsWith('<strong>');
+    const plain = p.replace(/<[^>]+>/g, '');
+    const m = /[.!?…](?=\s)/.exec(plain);
+    if (!m) return { lead: plain, paras: ps.slice(1) };
+    const lead = plain.slice(0, m.index + 1).trim(), rest = plain.slice(m.index + 1).trim();
+    const out = ps.slice(1);
+    if (rest) out.unshift(em ? '<em>' + rest + '</em>' : st ? '<strong>' + rest + '</strong>' : rest);
+    return { lead, paras: out };
+  }
+  window.ART = {}; window.PHOTOS = {};
+  const POSTS = (window.POSTS_DATA || []).map((d, i, all) => {
+    const [y, mo, da] = d.date.split('-').map(Number);
+    const p = { n: String(d.id), num: String(all.length - i).padStart(3, '0'), title: d.title, min: d.min || 1, date: new Date(y, mo - 1, da) };
+    if (d.paras && d.paras.length) { const L = splitLead(d.paras); ART[p.n] = { lead: L.lead, paras: L.paras, min: p.min }; }
+    if (d.photos && d.photos.items && d.photos.items.length) PHOTOS[p.n] = d.photos;
+    return p;
+  });
 
   const list = document.getElementById('list'), band = document.getElementById('band');
   document.getElementById('count').textContent = '(' + POSTS.length + ')';
@@ -505,7 +505,7 @@ body.entered .wordmark{color:#fff;text-shadow:none}
     const short = String(p.date.getDate()).padStart(2, '0') + '.' + String(p.date.getMonth() + 1).padStart(2, '0') + '.' + String(p.date.getFullYear()).slice(2);
     a.innerHTML = '<span class="c-num"></span><span></span><span class="c-time"></span><span><span class="long"></span><span class="short"></span></span>';
     const s = a.children;
-    s[0].textContent = p.n; s[1].textContent = p.title; s[2].textContent = p.min + ' мин';
+    s[0].textContent = p.num; s[1].textContent = p.title; s[2].textContent = p.min + ' мин';
     s[3].querySelector('.long').textContent = long; s[3].querySelector('.short').textContent = short;
     list.appendChild(a);
   });
@@ -603,7 +603,7 @@ body.entered .wordmark{color:#fff;text-shadow:none}
     let k = Math.floor(Math.random() * pool.length);
     if (pool.length > 1 && pool[k] === img.getAttribute('src')) k = (k + 1) % pool.length;
     img.src = pool[k];
-    $('pMeta').innerHTML = '<span>№ ' + n + '</span><span>' + A.min + ' мин</span><span>' + P.date.getDate() + ' ' + M[P.date.getMonth()] + ' ' + P.date.getFullYear() + '</span>';
+    $('pMeta').innerHTML = '<span>№ ' + P.num + '</span><span>' + A.min + ' мин</span><span>' + P.date.getDate() + ' ' + M[P.date.getMonth()] + ' ' + P.date.getFullYear() + '</span>';
     $('pLead').textContent = A.lead;
     $('crumbCur').textContent = P.title;
     // фото поста: 1 — во всю ширину; 2 — два во всю ширину; нечётное — одно широкое + пары; чётное — пары
@@ -638,7 +638,7 @@ body.entered .wordmark{color:#fff;text-shadow:none}
   }
 
   function route(force) {
-    const m = /^#post-(\d{3})$/.exec(location.hash);
+    const m = /^#post-(\d+)$/.exec(location.hash);
     const n = force || (m && window.ART && ART[m[1]] ? m[1] : null);
     if (n) {
       if (!active) listY = window.scrollY;
@@ -705,7 +705,7 @@ body.entered .wordmark{color:#fff;text-shadow:none}
   // GoatCounter: учёт посещений без кук. Главная и каждая статья — отдельная страница в статистике.
   let last = null;
   function track() {
-    const path = location.hash && /^#post-\d{3}$/.test(location.hash) ? '/post-' + location.hash.slice(6) : '/';
+    const path = location.hash && /^#post-\d+$/.test(location.hash) ? '/post-' + location.hash.slice(6) : '/';
     if (path === last) return;
     if (!window.goatcounter || !window.goatcounter.count) { setTimeout(track, 400); return; }
     last = path;
