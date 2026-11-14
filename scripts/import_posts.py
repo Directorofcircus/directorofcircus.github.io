@@ -67,6 +67,7 @@ def clean_inline(node):
             if href.startswith('http'):
                 out.append(f'<a href="{href}" target="_blank" rel="noopener">{inner}</a>')
             else: out.append(inner)
+        elif name in ('h1', 'h2', 'h3', 'h4'): out.append('\n<strong>' + re.sub(r'</?strong>', '', inner).strip() + '</strong>\n')
         elif name == 'blockquote': out.append('\n' + inner + '\n')
         else: out.append(inner)
     return ''.join(out)
@@ -87,8 +88,25 @@ def parse_page(html):
         except ValueError: continue
         t = w.select_one('a.tgme_widget_message_date time') or w.select_one('time[datetime]')
         dt = datetime.fromisoformat(t['datetime']).astimezone(TZ) if t and t.get('datetime') else None
-        text_el = w.select_one('div.tgme_widget_message_text')
+        text_el = w.select_one('div.tgme_widget_message_text') or w.select_one('.js-message_text')
         html_text = clean_inline(text_el) if text_el else ''
+        if not re.sub('<[^>]+>', '', html_text).strip():
+            # запасной путь: текст в непривычной разметке — берём весь блок поста без служебных частей
+            bubble = w.select_one('.tgme_widget_message_bubble')
+            if bubble:
+                b = BeautifulSoup(str(bubble), 'html.parser')
+                for junk in b.select('.tgme_widget_message_author, .tgme_widget_message_footer, .tgme_widget_message_info, '
+                                     '.tgme_widget_message_reactions, .tgme_widget_message_owner_name, .tgme_widget_message_views, '
+                                     '.tgme_widget_message_forwarded_from, .tgme_widget_message_reply, '
+                                     'a.tgme_widget_message_photo_wrap, .tgme_widget_message_video_player, '
+                                     '.tgme_widget_message_link_preview, .message_media_not_supported_wrap, script, style'):
+                    junk.decompose()
+                inner = b.select_one('.tgme_widget_message_bubble')
+                for blk in inner.find_all(['p', 'div', 'h1', 'h2', 'h3', 'h4', 'li', 'blockquote']):
+                    blk.insert_after(NavigableString('\n'))
+                html_text = clean_inline(inner)
+            if TARGET and mid == TARGET:
+                log(f'  Разметка поста {mid} (начало): ' + re.sub(r'\s+', ' ', str(w))[:1500])
         photos = []
         for a in w.select('a.tgme_widget_message_photo_wrap'):
             m = re.search(r"background-image:url\('([^']+)'\)", a.get('style', ''))
