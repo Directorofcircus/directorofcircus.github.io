@@ -3,11 +3,12 @@
 Перенос постов из публичной ленты Telegram-канала на сайт.
 
 Что делает:
-  1. Читает https://t.me/s/<канал> (и страницы назад, до поста «since» из настроек).
-  2. Берёт текстовые посты: текст с жирным/курсивом/ссылками, дату, фото.
-  3. Склеивает части (по списку «merge» в настройках и по пометкам «ч.1», «ч.2» в заголовке).
-  4. Считает время чтения, скачивает фото, увеличивает их (если есть модель) и сохраняет в WebP.
-  5. Записывает data/posts.json (состояние) и js/posts.js (то, что читает сайт).
+  1. Если бот сообщил о конкретном посте — ждёт, пока он появится в публичной ленте (до 5 минут).
+  2. Читает https://t.me/s/<канал> (и страницы назад, до поста «since» из настроек).
+  3. Берёт текстовые посты: текст с жирным/курсивом/ссылками, дату, фото.
+  4. Склеивает части (по списку «merge» в настройках и по пометкам «ч.1», «ч.2» в заголовке).
+  5. Считает время чтения, скачивает фото, увеличивает их (если есть модель) и сохраняет в WebP.
+  6. Записывает data/posts.json (состояние) и js/posts.js (то, что читает сайт).
 
 Настройки и ручные правки — в файле posts-settings.json в корне сайта.
 """
@@ -29,6 +30,7 @@ PHOTO_DIR = os.path.join(ROOT, 'assets', 'photos')
 MODEL = os.path.join(ROOT, 'scripts', 'realesr-general-x4v3.onnx')
 UA = {'User-Agent': 'Mozilla/5.0 (compatible; circus-director-site/1.0)'}
 PART_RE = re.compile(r'[\s,.:–—-]*\(?\s*(ч(асть)?|п(ункт)?)\.?\s*\d+\s*\)?\s*$', re.I)
+TARGET = int(os.environ.get('MESSAGE_ID') or 0)   # номер поста, о котором сообщил бот
 
 def log(*a): print(*a, flush=True)
 
@@ -45,7 +47,7 @@ def fetch_page(before=None):
     raise SystemExit('Не удалось открыть ленту ' + url)
 
 def clean_inline(node):
-    """HTML текста поста → наш безопасный HTML (strong/em/u/s/a), строки разделены '\n'."""
+    """HTML текста поста → наш безопасный HTML (strong/em/u/s/a), строки разделены '\\n'."""
     out = []
     for ch in node.children:
         if isinstance(ch, NavigableString):
@@ -65,7 +67,6 @@ def clean_inline(node):
             if href.startswith('http'):
                 out.append(f'<a href="{href}" target="_blank" rel="noopener">{inner}</a>')
             else: out.append(inner)
-        elif name == 'tg-spoiler' or 'tg-spoiler' in cls: out.append(inner)
         elif name == 'blockquote': out.append('\n' + inner + '\n')
         else: out.append(inner)
     return ''.join(out)
@@ -95,7 +96,20 @@ def parse_page(html):
         msgs.append({'id': mid, 'date': dt, 'html': html_text, 'photos': photos})
     return msgs
 
+def wait_for_target():
+    """Бот сообщил о посте — ждём, пока он появится в публичной ленте (до 5 минут)."""
+    if not TARGET: return
+    for attempt in range(16):
+        msgs = parse_page(fetch_page())
+        top = max((m['id'] for m in msgs), default=0)
+        if top >= TARGET:
+            log(f'Пост {TARGET} есть в ленте.'); return
+        log(f'Поста {TARGET} в ленте пока нет (последний {top}), жду 20 с…')
+        time.sleep(20)
+    log(f'Пост {TARGET} так и не появился в ленте за 5 минут — сработает ежедневная проверка.')
+
 def read_channel():
+    wait_for_target()
     seen, before, pages = {}, None, 0
     while True:
         msgs = parse_page(fetch_page(before)); pages += 1
@@ -116,7 +130,7 @@ def plain(s): return re.sub('<[^>]+>', '', s).strip()
 
 def is_title_line(line):
     p = plain(line)
-    return 0 < len(p) <= 90 and re.fullmatch(r'\s*<strong>.*</strong>\s*', line or '') is not None and '\n' not in p
+    return 0 < len(p) <= 90 and re.fullmatch(r'\s*<strong>.*</strong>\s*', line or '') is not None
 
 def base_title(line):
     return PART_RE.sub('', plain(line)).strip(' .:—-')
@@ -130,8 +144,9 @@ def build_posts(msgs):
     exclude = set(map(str, S.get('exclude', []))); include = set(map(str, S.get('include', [])))
     titles = {str(k): v for k, v in S.get('titles', {}).items()}
     by_id = {str(m['id']): m for m in msgs}
-    used, posts = set(), []
     ids = [str(m['id']) for m in msgs]
+    newest = max((int(x) for x in ids), default=0)
+    used, posts = set(), []
     i = 0
     while i < len(ids):
         mid = ids[i]
@@ -153,7 +168,7 @@ def build_posts(msgs):
         i += 1
         if mid in exclude: continue
         lines, photos, title_line = [], [], None
-        for k, g in enumerate(group):
+        for g in group:
             m = by_id[g]; ls = lines_of(m['html'])
             if ls and is_title_line(ls[0]):
                 if title_line is None: title_line = ls[0]
@@ -164,7 +179,11 @@ def build_posts(msgs):
         while j < len(ids) and not by_id[ids[j]]['html'].strip() and by_id[ids[j]]['photos'] and ids[j] not in in_group:
             photos += by_id[ids[j]]['photos']; used.add(ids[j]); j += 1
         words = word_count(lines)
-        if words < MIN_WORDS and mid not in include: continue
+        if words < MIN_WORDS and mid not in include:
+            if int(mid) == TARGET or int(mid) > newest - 3:
+                log(f'  Пост {mid}: {words} слов — меньше {MIN_WORDS}, не переношу. '
+                    f'Чтобы перенести, добавь "{mid}" в include в posts-settings.json.')
+            continue
         if not lines: continue
         title = titles.get(mid) or (base_title(title_line) if title_line else None)
         if not title:
@@ -248,11 +267,13 @@ def main():
         photos = process_photos(p)
         if photos: p['photos'] = photos
         elif prev and prev.get('photos'): p['photos'] = prev['photos']
-    # посты, которых сейчас нет в ленте (например, старше «since»), сохраняем как были
+    # посты старше «since» сохраняем как были
     ids = {p['id'] for p in posts}
     for pid, p in old.items():
         if pid not in ids and int(pid) < SINCE: posts.append(p)
     posts.sort(key=lambda p: int(p['id']), reverse=True)
+    if TARGET and str(TARGET) not in ids and not any(str(TARGET) in p.get('parts', []) for p in posts):
+        log(f'Пост {TARGET} на сайт не попал (см. причину выше).')
     os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
     json.dump({'posts': posts}, open(STATE_PATH, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     data = [{k: p[k] for k in ('id', 'title', 'date', 'min', 'paras', 'photos') if k in p} for p in posts]
