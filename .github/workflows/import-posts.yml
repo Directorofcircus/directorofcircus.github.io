@@ -2,14 +2,14 @@ name: Перенос постов из Telegram
 
 on:
   repository_dispatch:
-    types: [telegram-post]
-  workflow_dispatch:
+    types: [telegram-post]      # сигнал от бота: в канале вышел или изменился пост
+  workflow_dispatch:            # кнопка «Run workflow» для ручного запуска
   schedule:
-    - cron: '17 3 * * *'
+    - cron: '17 3 * * *'        # запасная проверка раз в сутки
 
 concurrency:
   group: import-posts
-  cancel-in-progress: true
+  cancel-in-progress: false     # сигналы встают в очередь, ни один пост не теряется
 
 jobs:
   import:
@@ -26,11 +26,9 @@ jobs:
       - name: Библиотеки
         run: pip install requests beautifulsoup4 pillow numpy onnxruntime
 
-      - name: Пауза, чтобы пост появился в публичной ленте
-        if: github.event_name == 'repository_dispatch'
-        run: sleep 45
-
       - name: Перенос
+        env:
+          MESSAGE_ID: ${{ github.event.client_payload.message_id }}
         run: python scripts/import_posts.py
 
       - name: Публикация на сайте
@@ -42,5 +40,6 @@ jobs:
             echo "Изменений нет"
           else
             git commit -m "Новые посты из Telegram"
+            git pull --rebase
             git push
           fi
